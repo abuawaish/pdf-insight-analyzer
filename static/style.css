@@ -1,0 +1,442 @@
+/* ===== VARIABLES ===== */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #7209b7;
+    --accent: #f72585;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --success: #4cc9f0;
+    --warning: #fca311;
+    --danger: #e63946;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+/* ===== BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f4 100%);
+    color: var(--dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== HEADER STYLES ===== */
+.app-header {
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.app-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.app-header h1 span {
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.tagline {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin-top: 0.5rem;
+}
+
+/* ===== CARD LAYOUT ===== */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+    .content-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .response-section {
+        grid-column: span 2;
+    }
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== UPLOAD SECTION ===== */
+.upload-section h2, .query-section h2, .response-header h2 {
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-area {
+    border: 2px dashed var(--light-gray);
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.upload-area.highlight {
+    border-color: var(--primary);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.upload-icon {
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.upload-area p {
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+}
+
+.small {
+    font-size: 0.9rem;
+}
+
+.file-input-container {
+    margin-top: 1rem;
+}
+
+#pdf-upload {
+    display: none;
+}
+
+.btn-upload {
+    display: inline-block;
+    background: var(--light-gray);
+    color: var(--dark);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-upload:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-upload i {
+    margin-right: 8px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 1rem 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: block;
+    width: 100%;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(67, 97, 238, 0.3);
+}
+
+.btn-primary i {
+    margin-right: 10px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-container {
+    position: relative;
+}
+
+select {
+    width: 100%;
+    padding: 1rem;
+    padding-right: 3rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 12px;
+    background: white;
+    font-size: 1rem;
+    appearance: none;
+    transition: var(--transition);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.select-icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    pointer-events: none;
+}
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 12px;
+    font-size: 1rem;
+    resize: vertical;
+    transition: var(--transition);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+/* ===== RESPONSE SECTION ===== */
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.ai-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: var(--light-gray);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.pulse-animation {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.7; }
+}
+
+.response-content {
+    min-height: 250px;
+    background: var(--light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.placeholder-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--gray);
+    text-align: center;
+    padding: 2rem;
+}
+
+.placeholder-text i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--light-gray);
+}
+
+.response-bubble {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    border: 1px solid var(--light-gray);
+}
+
+.response-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.response-text {
+    line-height: 1.8;
+}
+
+/* ===== STATUS MESSAGES ===== */
+.status-message {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.success-message {
+    padding: 1rem;
+    background: rgba(76, 201, 240, 0.1);
+    border-left: 4px solid var(--success);
+    border-radius: 4px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-message {
+    padding: 1rem;
+    background: rgba(230, 57, 70, 0.1);
+    border-left: 4px solid var(--danger);
+    border-radius: 4px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.processing-message {
+    padding: 1rem;
+    background: rgba(252, 163, 17, 0.1);
+    border-left: 4px solid var(--warning);
+    border-radius: 4px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.tech-stack {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+/* ===== ANIMATIONS ===== */
+.animate-fadein {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slideup {
+    animation: slideUp 0.8s ease-out;
+}
+
+.animate-popin {
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.8);
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
