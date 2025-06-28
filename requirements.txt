@@ -1,8 +1,6 @@
-Flask==2.2.5
-qdrant-client==1.6.9
-PyPDF2==3.0.1
-python-dotenv==1.0.1
-requests==2.31.0
-sentence-transformers==2.2.2
-torch==1.13.1
-gunicorn==21.2.0
+Flask
+qdrant-client
+PyPDF2
+python-dotenv
+requests
+sentence-transformers
