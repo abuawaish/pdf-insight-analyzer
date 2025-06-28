@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Insight Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo-container">
+                <i class="fas fa-file-pdf logo-icon"></i>
+                <h1>PDF Insight<span>AI</span></h1>
+            </div>
+            <p class="tagline">Intelligent Document Analysis Powered by AI</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-grid">
+            <!-- Upload Section -->
+            <section class="card upload-section animate-fadein">
+                <h2><i class="fas fa-cloud-upload-alt"></i> Upload PDF</h2>
+                <div class="upload-area" id="drop-zone">
+                    <i class="fas fa-file-upload upload-icon"></i>
+                    <p>Drag & drop your PDF here</p>
+                    <p class="small">or</p>
+                    <div class="file-input-container">
+                        <input type="file" id="pdf-upload" accept=".pdf">
+                        <label for="pdf-upload" class="btn-upload">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </label>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="uploadPDF()">
+                    <i class="fas fa-upload"></i> Process Document
+                </button>
+                <div id="upload-status" class="status-message"></div>
+            </section>
+
+            <!-- Query Section -->
+            <section class="card query-section animate-slideup">
+                <h2><i class="fas fa-comments"></i> Ask About Your Document</h2>
+                
+                <div class="form-group">
+                    <label for="pdf-selector"><i class="fas fa-file-alt"></i> Select Document:</label>
+                    <div class="select-container">
+                        <select id="pdf-selector">
+                            {% for pdf in pdf_list %}
+                                <option value="{{ pdf }}">{{ pdf }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="fas fa-chevron-down select-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="query-input"><i class="fas fa-question-circle"></i> Your Question:</label>
+                    <textarea id="query-input" placeholder="Ask something about the document..."></textarea>
+                </div>
+                
+                <button class="btn-primary" onclick="submitQuery()">
+                    <i class="fas fa-paper-plane"></i> Get Insights
+                </button>
+            </section>
+
+            <!-- Response Section -->
+            <section class="card response-section animate-slideup">
+                <div class="response-header">
+                    <h2><i class="fas fa-robot"></i> AI Analysis</h2>
+                    <div class="ai-indicator">
+                        <span class="pulse-animation"></span>
+                        <span>AI Thinking</span>
+                    </div>
+                </div>
+                <div id="response-area" class="response-content">
+                    <div class="placeholder-text">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>Upload a PDF and ask questions to get AI-powered insights</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Powered by Hugging Face AI & Qdrant Vector Search</p>
+            <div class="tech-stack">
+                <i class="fab fa-python"></i>
+                <i class="fas fa-flask"></i>
+                <i class="fas fa-brain"></i>
+                <i class="fas fa-database"></i>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Upload PDF function
+        async function uploadPDF() {
+            const fileInput = document.getElementById('pdf-upload');
+            const statusElement = document.getElementById('upload-status');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                statusElement.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Please select a PDF file</div>`;
+                return;
+            }
+            
+            statusElement.innerHTML = `<div class="processing-message"><i class="fas fa-spinner fa-spin"></i> Processing document...</div>`;
+            
+            const formData = new FormData();
+            formData.append('pdf', file);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    statusElement.innerHTML = `<div class="success-message"><i class="fas fa-check-circle"></i> Uploaded: ${result.filename}</div>`;
+                    // Refresh page after 1.5 seconds
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    statusElement.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error: ${result.error}</div>`;
+                }
+            } catch (error) {
+                statusElement.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Upload failed: ${error.message}</div>`;
+            }
+        }
+
+        // Submit query function
+        async function submitQuery() {
+            const pdfSelector = document.getElementById('pdf-selector');
+            const queryInput = document.getElementById('query-input');
+            const responseArea = document.getElementById('response-area');
+            const aiIndicator = document.querySelector('.ai-indicator');
+            
+            if (!queryInput.value.trim()) {
+                responseArea.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Please enter a question</div>`;
+                return;
+            }
+            
+            // Show AI thinking state
+            aiIndicator.style.display = 'flex';
+            responseArea.innerHTML = '';
+            
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        pdf_name: pdfSelector.value,
+                        query: queryInput.value
+                    })
+                });
+                
+                const result = await response.json();
+                aiIndicator.style.display = 'none';
+                
+                // Format response with animation
+                responseArea.innerHTML = `
+                    <div class="response-bubble animate-popin">
+                        <div class="response-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Response</span>
+                        </div>
+                        <div class="response-text">${result.response}</div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                aiIndicator.style.display = 'none';
+                responseArea.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
+            }
+        }
+
+        // Drag and drop functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropZone.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropZone.classList.remove('highlight');
+            }
+            
+            dropZone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                const fileInput = document.getElementById('pdf-upload');
+                
+                if (files.length > 0 && files[0].type === 'application/pdf') {
+                    fileInput.files = files;
+                    dropZone.querySelector('p').textContent = files[0].name;
+                } else {
+                    alert('Please drop a PDF file');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
