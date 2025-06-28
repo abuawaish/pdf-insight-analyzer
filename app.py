@@ -58,4 +58,5 @@ def handle_query():
 if __name__ == '__main__':
     from utils import db_utils
     db_utils.initialize_collection()
-    app.run(debug=True, port=5002, host="0.0.0.0")
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, port=port, host="0.0.0.0")
