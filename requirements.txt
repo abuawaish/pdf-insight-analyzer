@@ -1,5 +1,5 @@
 Flask==2.2.5
-qdrant-client==1.14.3
+qdrant-client==1.6.9
 PyPDF2==3.0.1
 python-dotenv==1.0.1
 requests==2.31.0
