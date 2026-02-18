@@ -2,7 +2,7 @@
 
 ## Overview
 
-**PDF Insight Analyzer is an advanced AI-powered application that transforms static PDF documents into interactive knowledge bases. Built with Python and Flask, this tool leverages Hugging Face's state-of-the-art language models and Qdrant's vector search capabilities to provide intelligent insights from your documents.**
+**PDF Insight Analyzer is an advanced AI-powered application that transforms static PDF documents into interactive knowledge bases. Built with Python and Flask, this tool leverages OpenAI's GPT and embedding models along with Qdrant's vector search capabilities to provide intelligent insights from your documents.**
 
 ### **Key capabilities:**
 
@@ -32,7 +32,7 @@
 
 - **Advanced Vector Search:** Qdrant Cloud for efficient similarity search
 
-- **State-of-the-Art AI:** Hugging Face Inference API with Mixtral 8x7B model
+- **State-of-the-Art AI:** OpenAI GPT-3.5 Turbo for natural language understanding
 
 - **Modern Web Interface:** Responsive design with intuitive UX
 
@@ -45,13 +45,13 @@
 ### **Backend**
 
 ```text
-| Component         | Technology                  | Purpose                                  |
-|-------------------|-----------------------------|------------------------------------------|
-| **Framework**     | Flask 3.0                   | Web application framework                |
-| **AI Models**     | Hugging Face Inference API  | Natural language processing              |
-| **Vector DB**     | Qdrant Cloud                | Semantic search and storage              |
-| **Embeddings**    | SentenceTransformers        | Text to vector conversion                |
-| **PDF Processing**| PyPDF2                      | Text extraction from PDFs                |
+| Component         | Technology                    | Purpose                                  |
+|-------------------|-------------------------------|------------------------------------------|
+| **Framework**     | Flask 3.0                     | Web application framework                |
+| **AI Models**     | OpenAI API                    | Natural language processing              |
+| **Vector DB**     | Qdrant Cloud                  | Semantic search and storage              |
+| **Embeddings**    | OpenAI text-embedding-3-small | Text to vector conversion                |
+| **PDF Processing**| PyPDF2                        | Text extraction from PDFs                |
 ```
 
 ### **Frontend**
@@ -77,7 +77,7 @@ pdf-insight-app/
 ├── utils/
 │   ├── db_utils.py         # Qdrant database operations
 │   ├── pdf_utils.py        # PDF processing functions
-│   └── ai_utils.py         # hugging face API interactions
+│   └── ai_utils.py         # OpenAI API interactions
 ├── templates/
 │   └── index.html          # Main UI template
 └── static/
@@ -92,7 +92,7 @@ pdf-insight-app/
 
 - Pip package manager
 
-- Free Hugging Face account (sign up)
+- OpenAI API account (sign up)
 
 - Qdrant Cloud account (sign up)
 
@@ -123,7 +123,7 @@ pip install -r requirements.txt
 **Create `.env` file with your credentials:**
 
 ```bash
-HF_API_KEY=your_hugging_face_api_token
+OPENAI_API_KEY=your_openai_api_key
 QDRANT_URL=your_qdrant_cloud_url
 QDRANT_API_KEY=your_qdrant_api_key
 ```
@@ -215,7 +215,7 @@ graph TD
     H --> I[Query Embedding]
     I --> J[Semantic Search]
     J --> K[Context Retrieval]
-    K --> L[Hugging Face API]
+    K --> L[OpenAI API]
     L --> M[AI Response Generation]
     M --> A
 ```
