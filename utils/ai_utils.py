@@ -1,62 +1,44 @@
-import requests
-from sentence_transformers import SentenceTransformer
-from config import HF_API_KEY
+from openai import OpenAI
+from config import OPENAI_API_KEY
 
-embed_model = SentenceTransformer('all-MiniLM-L6-v2')
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def get_embeddings(texts):
-    return embed_model.encode(texts).tolist()
+    """Get embeddings using OpenAI API"""
+    if isinstance(texts, str):
+        texts = [texts]
+    
+    response = client.embeddings.create(
+        input=texts,
+        model="text-embedding-3-small"
+    )
+    
+    return [item.embedding for item in response.data]
 
 def query_llm(context, user_query):
-    """Query Hugging Face Inference API"""
-    API_URL = "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"
-    headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+    """Query OpenAI API for context-based answers"""
     
     # Format prompt with context and question
-    prompt = f"""
-    <s>[INST] You are an expert document analyst. Answer the question using ONLY the provided context.
-    If the answer isn't in the context, say "I don't know".
+    system_message = "You are an expert document analyst. Answer questions using ONLY the provided context. If the answer isn't in the context, say 'I don't know'."
     
-    Context:
-    {context}
-    
-    Question: {user_query} [/INST]
-    """
-    
-    payload = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 500,
-            "temperature": 0.3,
-            "return_full_text": False
-        }
-    }
+    user_message = f"""Context:
+{context}
+
+Question: {user_query}"""
     
     try:
-        response = requests.post(
-            API_URL,
-            headers=headers,
-            json=payload,
-            timeout=30
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_message}
+            ],
+            max_tokens=500,
+            temperature=0.3
         )
         
-        # Check for HTTP errors
-        response.raise_for_status()
-        
-        # Parse response
-        result = response.json()
-        
-        # Handle API errors
-        if isinstance(result, dict) and "error" in result:
-            return f"API Error: {result['error']}"
-        
-        # Extract generated text
-        if isinstance(result, list) and len(result) > 0:
-            return result[0]['generated_text'].strip()
-        
-        return "Unexpected API response format"
+        # Extract generated text from response
+        return response.choices[0].message.content.strip()
     
-    except requests.exceptions.RequestException as e:
-        return f"API Connection Error: {str(e)}"
     except Exception as e:
-        return f"Unexpected Error: {str(e)}"
+        return f"Error: {str(e)}"

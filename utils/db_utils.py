@@ -11,24 +11,27 @@ client = QdrantClient(
 
 def initialize_collection():
     try:
-        # Check if collection exists
+        # Check if collection exists and delete it (to recreate with new dimensions)
         client.get_collection(COLLECTION_NAME)
-        print(f"Collection {COLLECTION_NAME} already exists")
+        client.delete_collection(collection_name=COLLECTION_NAME)
+        print(f"Deleted existing collection {COLLECTION_NAME}")
     except Exception:
-        # Create new collection if it doesn't exist
-        client.recreate_collection(
-            collection_name=COLLECTION_NAME,
-            vectors_config=VectorParams(size=384, distance=Distance.COSINE)
-        )
-        print(f"Created collection {COLLECTION_NAME}")
-        
-        # Add index for filtering
-        client.create_payload_index(
-            collection_name=COLLECTION_NAME,
-            field_name="pdf_name",
-            field_schema="keyword"
-        )
-        time.sleep(1)  # Allow index to be created
+        pass
+    
+    # Create new collection with OpenAI embedding dimensions (1536)
+    client.recreate_collection(
+        collection_name=COLLECTION_NAME,
+        vectors_config=VectorParams(size=1536, distance=Distance.COSINE)
+    )
+    print(f"Created collection {COLLECTION_NAME} with 1536 dimensions")
+    
+    # Add index for filtering
+    client.create_payload_index(
+        collection_name=COLLECTION_NAME,
+        field_name="pdf_name",
+        field_schema="keyword"
+    )
+    time.sleep(1)  # Allow index to be created
 
 def store_embeddings(pdf_name, chunks, embeddings):
     points = []
@@ -64,11 +67,12 @@ def get_pdf_list():
     return list(pdf_names)
 
 def search_documents(query_embedding, pdf_name, top_k=5):
-    return client.search(
+    results = client.query_points(
         collection_name=COLLECTION_NAME,
-        query_vector=query_embedding,
+        query=query_embedding,
         query_filter=Filter(
             must=[FieldCondition(key="pdf_name", match=MatchValue(value=pdf_name))]
         ),
         limit=top_k
     )
+    return results.points
