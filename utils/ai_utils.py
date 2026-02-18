@@ -22,9 +22,9 @@ def query_llm(context, user_query):
     system_message = "You are an expert document analyst. Answer questions using ONLY the provided context. If the answer isn't in the context, say 'I don't know'."
     
     user_message = f"""Context:
-{context}
+                    {context}
 
-Question: {user_query}"""
+                    Question: {user_query}"""
     
     try:
         response = client.chat.completions.create(
