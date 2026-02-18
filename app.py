@@ -51,7 +51,7 @@ def handle_query():
     results = db_utils.search_documents(query_embedding, pdf_name)
     context = "\n".join([hit.payload['text'] for hit in results])
     
-    # Query Hugging Face
+    # Query openAI with context
     response = ai_utils.query_llm(context, user_query)
     return jsonify({"response": response})
 
