@@ -8,33 +8,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <style>
+        /* Light Mode (default) */
         :root {
+            --bg-gradient-start: #f5f7fa;
+            --bg-gradient-end: #e4e7f4;
+            --card-bg: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #e9ecef;
+            --code-bg: #2d2d2d;
+            --response-bg: #f8f9fa;
             --primary: #4361ee;
             --primary-dark: #3a56d4;
             --secondary: #7209b7;
             --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
             --success: #4cc9f0;
-            --warning: #fca311;
             --danger: #e63946;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-            --code-bg: #2d2d2d;
+        }
+
+        /* Dark Mode */
+        body.dark {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --card-bg: #2d2d3f;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --border-color: #3d3d5c;
+            --code-bg: #1e1e2f;
+            --response-bg: #25253a;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.2s ease;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f4 100%);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
@@ -49,6 +63,80 @@
             text-align: center;
             padding: 2rem 0;
             margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* Animated Toggle */
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .theme-switch-wrapper:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .theme-icons {
+            display: flex;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        .theme-icons i {
+            transition: transform 0.3s ease;
+        }
+        .theme-switch-wrapper:hover .fa-sun {
+            transform: rotate(15deg) scale(1.1);
+        }
+        .theme-switch-wrapper:hover .fa-moon {
+            transform: rotate(-10deg) scale(1.1);
         }
 
         .logo-container {
@@ -79,7 +167,7 @@
 
         .tagline {
             font-size: 1.1rem;
-            color: var(--gray);
+            color: var(--text-secondary);
             margin-top: 0.5rem;
         }
 
@@ -100,11 +188,11 @@
         }
 
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
             padding: 2rem;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
 
         .card:hover {
@@ -121,12 +209,12 @@
         }
 
         .upload-area {
-            border: 2px dashed var(--light-gray);
+            border: 2px dashed var(--border-color);
             border-radius: 12px;
             padding: 2.5rem 1.5rem;
             text-align: center;
             margin-bottom: 1.5rem;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
@@ -151,13 +239,13 @@
 
         .btn-upload {
             display: inline-block;
-            background: var(--light-gray);
-            color: var(--dark);
+            background: var(--border-color);
+            color: var(--text-primary);
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             border: none;
             font-size: 1rem;
         }
@@ -176,7 +264,7 @@
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             display: block;
             width: 100%;
         }
@@ -211,8 +299,10 @@
             width: 100%;
             padding: 1rem;
             padding-right: 3rem;
-            border: 1px solid var(--light-gray);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
+            background: var(--card-bg);
+            color: var(--text-primary);
             font-size: 1rem;
             appearance: none;
         }
@@ -227,7 +317,7 @@
             right: 1.2rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray);
+            color: var(--text-secondary);
             pointer-events: none;
         }
 
@@ -235,8 +325,10 @@
             width: 100%;
             min-height: 120px;
             padding: 1rem;
-            border: 1px solid var(--light-gray);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
+            background: var(--card-bg);
+            color: var(--text-primary);
             font-size: 1rem;
             resize: vertical;
             font-family: 'Poppins', sans-serif;
@@ -253,16 +345,37 @@
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
+        .response-header .right-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .clear-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .clear-btn:hover {
+            background: #c82333;
+            transform: scale(1.02);
+        }
         .ai-indicator {
             display: none;
             align-items: center;
             gap: 8px;
-            background: var(--light-gray);
+            background: var(--border-color);
             padding: 0.5rem 1rem;
             border-radius: 50px;
             font-size: 0.9rem;
-            color: var(--gray);
+            color: var(--text-secondary);
         }
 
         .pulse-animation {
@@ -282,7 +395,7 @@
 
         .response-content {
             min-height: 300px;
-            background: var(--light);
+            background: var(--response-bg);
             border-radius: 12px;
             padding: 1.5rem;
             display: flex;
@@ -296,7 +409,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: var(--gray);
+            color: var(--text-secondary);
             text-align: center;
             padding: 2rem;
         }
@@ -304,15 +417,15 @@
         .placeholder-text i {
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: var(--light-gray);
+            color: var(--border-color);
         }
 
         .response-bubble {
-            background: white;
+            background: var(--card-bg);
             border-radius: 18px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 1.5rem;
-            border: 1px solid var(--light-gray);
+            border: 1px solid var(--border-color);
             width: 100%;
         }
 
@@ -341,7 +454,6 @@
             margin-bottom: 0.4rem;
         }
 
-        /* Code blocks */
         .response-text pre {
             background: var(--code-bg);
             border-radius: 8px;
@@ -357,9 +469,8 @@
             white-space: pre;
         }
 
-        /* Output blocks */
         .output-block {
-            background: #1e1e1e;
+            background: var(--code-bg);
             color: #d4d4d4;
             padding: 1rem;
             border-radius: 8px;
@@ -372,30 +483,17 @@
         }
 
         /* highlight.js overrides */
-        .hljs-keyword,
-        .hljs-built_in,
-        .hljs-literal {
+        .hljs-keyword, .hljs-built_in, .hljs-literal {
             color: #ffffff !important;
             font-weight: bold !important;
         }
-
-        .hljs-comment,
-        .hljs-comment .hljs-keyword {
+        .hljs-comment, .hljs-comment .hljs-keyword {
             color: #ffffff !important;
             font-weight: bold !important;
         }
-
-        .hljs-string {
-            color: #f1fa8c !important;
-        }
-
-        .hljs-number {
-            color: #bd93f9 !important;
-        }
-
-        .hljs-function .hljs-title {
-            color: #50fa7b !important;
-        }
+        .hljs-string { color: #f1fa8c !important; }
+        .hljs-number { color: #bd93f9 !important; }
+        .hljs-function .hljs-title { color: #50fa7b !important; }
 
         .status-message {
             margin-top: 1.5rem;
@@ -408,26 +506,14 @@
             align-items: center;
             gap: 10px;
         }
-
-        .success-message {
-            background: rgba(76, 201, 240, 0.1);
-            border-left: 4px solid var(--success);
-        }
-
-        .error-message {
-            background: rgba(230, 57, 70, 0.1);
-            border-left: 4px solid var(--danger);
-        }
-
-        .processing-message {
-            background: rgba(252, 163, 17, 0.1);
-            border-left: 4px solid var(--warning);
-        }
+        .success-message { background: rgba(76, 201, 240, 0.1); border-left: 4px solid var(--success); }
+        .error-message { background: rgba(230, 57, 70, 0.1); border-left: 4px solid var(--danger); }
+        .processing-message { background: rgba(252, 163, 17, 0.1); border-left: 4px solid var(--warning); }
 
         .app-footer {
             text-align: center;
             padding: 2rem 0;
-            color: var(--gray);
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
@@ -451,6 +537,16 @@
 <body>
     <div class="app-container">
         <header class="app-header">
+            <div class="theme-switch-wrapper" id="themeToggleWrapper">
+                <div class="theme-icons">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="themeCheckbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
             <div class="logo-container">
                 <i class="fas fa-file-pdf logo-icon"></i>
                 <h1>PDF Insight<span>AI</span></h1>
@@ -505,9 +601,14 @@
             <section class="card response-section animate-slideup">
                 <div class="response-header">
                     <h2><i class="fas fa-robot"></i> AI Analysis</h2>
-                    <div class="ai-indicator">
-                        <span class="pulse-animation"></span>
-                        <span>AI Thinking</span>
+                    <div class="right-actions">
+                        <button class="clear-btn" id="clearResponseBtn" title="Clear AI Response">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                        <div class="ai-indicator">
+                            <span class="pulse-animation"></span>
+                            <span>AI Thinking</span>
+                        </div>
                     </div>
                 </div>
                 <div id="response-area" class="response-content">
@@ -533,6 +634,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <script>
+        // ======================= 1. STRIP HTML TAGS ONLY (keep **, no conversion) =======================
+        function stripHtmlTags(html) {
+            if (!html) return '';
+            // Simple regex to remove any HTML tags (including <strong> etc.)
+            return html.replace(/<[^>]*>/g, '');
+        }
+
+        // ======================= 2. THEME TOGGLE =======================
+        const themeCheckbox = document.getElementById('themeCheckbox');
+        const body = document.body;
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                themeCheckbox.checked = true;
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                themeCheckbox.checked = false;
+                localStorage.setItem('theme', 'light');
+            }
+            const wrapper = document.getElementById('themeToggleWrapper');
+            wrapper.style.transform = 'scale(1.02)';
+            setTimeout(() => { wrapper.style.transform = ''; }, 200);
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(prefersDark ? 'dark' : 'light');
+        }
+        themeCheckbox.addEventListener('change', (e) => setTheme(e.target.checked ? 'dark' : 'light'));
+
+        // ======================= 3. CLEAR BUTTON =======================
+        const clearBtn = document.getElementById('clearResponseBtn');
+        const responseArea = document.getElementById('response-area');
+        clearBtn.addEventListener('click', () => {
+            responseArea.innerHTML = `
+                <div class="placeholder-text">
+                    <i class="fas fa-lightbulb"></i>
+                    <p>Upload a PDF and ask questions to get AI-powered insights</p>
+                </div>
+            `;
+        });
+
+        // ======================= 4. UPLOAD PDF =======================
         async function uploadPDF() {
             const fileInput = document.getElementById('pdf-upload');
             const statusElement = document.getElementById('upload-status');
@@ -558,21 +705,22 @@
             }
         }
 
+        // ======================= 5. SUBMIT QUERY (strip HTML tags, keep **) =======================
         async function submitQuery() {
             const pdfSelector = document.getElementById('pdf-selector');
             const queryInput = document.getElementById('query-input');
-            const responseArea = document.getElementById('response-area');
+            const responseDiv = document.getElementById('response-area');
             const aiIndicator = document.querySelector('.ai-indicator');
             if (!queryInput.value.trim()) {
-                responseArea.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Please enter a question</div>`;
+                responseDiv.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Please enter a question</div>`;
                 return;
             }
             aiIndicator.style.display = 'flex';
-            responseArea.innerHTML = '';
+            responseDiv.innerHTML = '';
             try {
                 const response = await fetch('/query', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         pdf_name: pdfSelector.value,
                         query: queryInput.value
@@ -580,8 +728,14 @@
                 });
                 const result = await response.json();
                 aiIndicator.style.display = 'none';
-                const formattedHtml = formatResponseText(result.response);
-                responseArea.innerHTML = `
+
+                // Strip HTML tags only – do NOT convert ** to <strong>
+                let cleanedResponse = result.response || '';
+                cleanedResponse = stripHtmlTags(cleanedResponse);
+                // No further conversion of ** is performed
+
+                const formattedHtml = formatResponseText(cleanedResponse);
+                responseDiv.innerHTML = `
                     <div class="response-bubble animate-popin">
                         <div class="response-header">
                             <i class="fas fa-robot"></i>
@@ -595,41 +749,32 @@
                 });
             } catch (error) {
                 aiIndicator.style.display = 'none';
-                responseArea.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
+                responseDiv.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
             }
         }
 
+        // ======================= 6. RESPONSE TEXT FORMATTER (headings, lists, code, output) =======================
         function formatResponseText(text) {
             if (!text) return '<p>No response content.</p>';
             let escaped = escapeHtml(text);
-            
-            // ---- FIX: Capture code blocks with optional language and possible leading spaces ----
             const codeBlocks = [];
-            // Regex matches any line that starts with optional spaces, then ```, optional language, newline, any content, then ```
             escaped = escaped.replace(/^[ \t]*```(\w*)\n([\s\S]*?)\n[ \t]*```/gm, (match, lang, code) => {
                 const idx = codeBlocks.length;
                 const language = lang || 'plaintext';
                 let decodedCode = decodeHtmlEntities(code.trim());
-                // Preserve indentation inside code block
                 codeBlocks.push(`<pre><code class="language-${language}">${decodedCode}</code></pre>`);
                 return `__CODE_BLOCK_${idx}__`;
             });
-            
-            // ---- Capture Output: lines starting with "Output:" (case-insensitive) ----
             const outputBlocks = [];
             escaped = escaped.replace(/(?:^|\n)(Output:)\s*\n?([\s\S]*?)(?=\n\n|\n#|\n##|\n\*\*|$)/gi, (match, label, content) => {
                 const idx = outputBlocks.length;
-                let outputText = content.trim();
-                outputText = outputText.replace(/\n/g, '<br>');
+                let outputText = content.trim().replace(/\n/g, '<br>');
                 outputBlocks.push(`<div class="output-block"><strong>${label}</strong><br>${outputText}</div>`);
                 return `__OUTPUT_BLOCK_${idx}__`;
             });
-            
-            // Process headings, lists, paragraphs
             let lines = escaped.split(/\r?\n/);
             let htmlLines = [];
             let inList = false, listType = null, listItems = [];
-            
             function flushList() {
                 if (listItems.length === 0) return;
                 const tag = listType === 'ol' ? 'ol' : 'ul';
@@ -638,9 +783,7 @@
                 inList = false;
                 listType = null;
             }
-            
             for (let line of lines) {
-                // Restore code blocks and output blocks
                 line = line.replace(/__CODE_BLOCK_(\d+)__/g, (m, idx) => codeBlocks[parseInt(idx)]);
                 line = line.replace(/__OUTPUT_BLOCK_(\d+)__/g, (m, idx) => outputBlocks[parseInt(idx)]);
                 let trimmed = line.trim();
@@ -651,10 +794,7 @@
                 }
                 let numberedMatch = trimmed.match(/^(\d+)\.\s+(.+)/);
                 let bulletMatch = trimmed.match(/^[\*\-]\s+(.+)/);
-                // Detect headings: lines that are all caps/short with colon, or start with #, or contain "Example" etc.
-                let isHeading = /^#{1,3}\s/.test(trimmed) || 
-                                (trimmed.endsWith(':') && trimmed.length < 60) || 
-                                /^(Solution|Algorithm|Explanation|Steps?|Answer|Logic|Working|Example)/i.test(trimmed);
+                let isHeading = /^#{1,3}\s/.test(trimmed) || (trimmed.endsWith(':') && trimmed.length < 60) || /^(Solution|Algorithm|Explanation|Steps?|Answer|Logic|Working|Example)/i.test(trimmed);
                 if (isHeading && !inList) {
                     let headingText = trimmed.replace(/^#{1,3}\s*/, '');
                     if (!headingText.endsWith(':')) headingText += ':';
@@ -669,10 +809,8 @@
                     listItems.push(`<li>${bulletMatch[1]}</li>`);
                 } else {
                     if (inList) flushList();
-                    // Bold and italic
-                    let para = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                                   .replace(/__(.+?)__/g, '<strong>$1</strong>')
-                                   .replace(/\*(.+?)\*/g, '<em>$1</em>');
+                    // Do NOT convert ** to <strong> – leave as plain text
+                    let para = line.replace(/__(.+?)__/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
                     htmlLines.push(`<p>${para}</p>`);
                 }
             }
@@ -686,20 +824,39 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
         function decodeHtmlEntities(str) {
-            return str.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = str;
+            return textarea.value;
         }
 
+        // ======================= 7. DRAG & DROP + BROWSE FILENAME =======================
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('drop-zone');
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); }));
+            const fileInput = document.getElementById('pdf-upload');
+            const dropZoneParagraph = dropZone.querySelector('p');
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    dropZoneParagraph.textContent = fileInput.files[0].name;
+                } else {
+                    dropZoneParagraph.textContent = "Drag & drop your PDF here";
+                }
+            });
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }));
             ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => dropZone.classList.add('highlight')));
             ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => dropZone.classList.remove('highlight')));
             dropZone.addEventListener('drop', (e) => {
                 const file = e.dataTransfer.files[0];
                 if (file && file.type === 'application/pdf') {
-                    document.getElementById('pdf-upload').files = e.dataTransfer.files;
-                    dropZone.querySelector('p').textContent = file.name;
-                } else alert('Please drop a PDF file');
+                    fileInput.files = e.dataTransfer.files;
+                    dropZoneParagraph.textContent = file.name;
+                } else {
+                    alert('Please drop a PDF file');
+                }
             });
         });
     </script>
