@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>PDF Insight Analyzer | AI-Powered Document Analysis</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <style>
-        /* Light Mode (default) */
         :root {
             --bg-gradient-start: #f5f7fa;
             --bg-gradient-end: #e4e7f4;
@@ -26,7 +25,6 @@
             --danger: #e63946;
         }
 
-        /* Dark Mode */
         body.dark {
             --bg-gradient-start: #1a1a2e;
             --bg-gradient-end: #16213e;
@@ -66,30 +64,32 @@
             position: relative;
         }
 
-        /* Animated Toggle */
         .theme-switch-wrapper {
             position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             background: var(--card-bg);
-            padding: 5px 12px;
-            border-radius: 50px;
+            padding: 6px 16px;
+            border-radius: 60px;
             border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            z-index: 100;
         }
         .theme-switch-wrapper:hover {
             transform: scale(1.02);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 0 12px rgba(67, 97, 238, 0.3);
+            border-color: var(--primary);
         }
         .switch {
             position: relative;
             display: inline-block;
-            width: 52px;
-            height: 26px;
+            width: 56px;
+            height: 28px;
         }
         .switch input {
             opacity: 0;
@@ -103,40 +103,41 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background: linear-gradient(145deg, #c0c5ce, #e0e5ec);
             transition: 0.4s;
             border-radius: 34px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.2);
         }
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 22px;
+            width: 22px;
             left: 3px;
             bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
+            background: radial-gradient(circle, #ffdf8c, #f4c542);
+            transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         input:checked + .slider {
-            background-color: var(--primary);
+            background: linear-gradient(145deg, #2c3e66, #1a2a4f);
         }
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(28px);
+            background: radial-gradient(circle, #e0e8ff, #a0b5e6);
+            box-shadow: 0 0 4px #b0c4ff;
         }
-        .theme-icons {
-            display: flex;
-            gap: 8px;
-            font-size: 1.1rem;
+        .theme-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, filter 0.2s;
         }
-        .theme-icons i {
-            transition: transform 0.3s ease;
+        .theme-switch-wrapper:hover .theme-icon {
+            transform: rotate(15deg) scale(1.15);
+            filter: drop-shadow(0 0 4px #ffb347);
         }
-        .theme-switch-wrapper:hover .fa-sun {
-            transform: rotate(15deg) scale(1.1);
-        }
-        .theme-switch-wrapper:hover .fa-moon {
-            transform: rotate(-10deg) scale(1.1);
+        .theme-switch-wrapper:active {
+            transform: scale(0.98);
         }
 
         .logo-container {
@@ -145,12 +146,10 @@
             justify-content: center;
             gap: 15px;
         }
-
         .logo-icon {
             font-size: 2.5rem;
             color: var(--primary);
         }
-
         .app-header h1 {
             font-size: 2.8rem;
             font-weight: 700;
@@ -159,12 +158,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .app-header h1 span {
             font-weight: 800;
             color: var(--accent);
         }
-
         .tagline {
             font-size: 1.1rem;
             color: var(--text-secondary);
@@ -177,7 +174,6 @@
             gap: 2rem;
             margin-bottom: 3rem;
         }
-
         @media (min-width: 768px) {
             .content-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -194,7 +190,6 @@
             padding: 2rem;
             transition: all 0.3s ease;
         }
-
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
@@ -217,26 +212,21 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .upload-area.highlight {
             border-color: var(--primary);
             background-color: rgba(67, 97, 238, 0.05);
         }
-
         .upload-icon {
             font-size: 3.5rem;
             color: var(--primary);
             margin-bottom: 1rem;
         }
-
         .file-input-container {
             margin-top: 1rem;
         }
-
         #pdf-upload {
             display: none;
         }
-
         .btn-upload {
             display: inline-block;
             background: var(--border-color);
@@ -249,7 +239,6 @@
             border: none;
             font-size: 1rem;
         }
-
         .btn-upload:hover {
             background: var(--primary);
             color: white;
@@ -268,12 +257,10 @@
             display: block;
             width: 100%;
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 7px 14px rgba(67, 97, 238, 0.3);
         }
-
         .btn-primary i {
             margin-right: 10px;
         }
@@ -281,7 +268,6 @@
         .form-group {
             margin-bottom: 1.5rem;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
@@ -290,11 +276,9 @@
             align-items: center;
             gap: 8px;
         }
-
         .select-container {
             position: relative;
         }
-
         select {
             width: 100%;
             padding: 1rem;
@@ -306,12 +290,10 @@
             font-size: 1rem;
             appearance: none;
         }
-
         select:focus {
             outline: none;
             border-color: var(--primary);
         }
-
         .select-icon {
             position: absolute;
             right: 1.2rem;
@@ -333,7 +315,6 @@
             resize: vertical;
             font-family: 'Poppins', sans-serif;
         }
-
         textarea:focus {
             outline: none;
             border-color: var(--primary);
@@ -362,6 +343,14 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+        }
+        .clear-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
         }
         .clear-btn:hover {
             background: #c82333;
@@ -377,7 +366,6 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
         }
-
         .pulse-animation {
             display: inline-block;
             width: 12px;
@@ -386,7 +374,6 @@
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
-
         @keyframes pulse {
             0% { transform: scale(0.8); opacity: 0.7; }
             50% { transform: scale(1.1); opacity: 1; }
@@ -402,7 +389,6 @@
             flex-direction: column;
             overflow-y: auto;
         }
-
         .placeholder-text {
             display: flex;
             flex-direction: column;
@@ -413,13 +399,11 @@
             text-align: center;
             padding: 2rem;
         }
-
         .placeholder-text i {
             font-size: 3rem;
             margin-bottom: 1rem;
             color: var(--border-color);
         }
-
         .response-bubble {
             background: var(--card-bg);
             border-radius: 18px;
@@ -428,28 +412,23 @@
             border: 1px solid var(--border-color);
             width: 100%;
         }
-
         .response-text {
             line-height: 1.7;
             font-size: 1rem;
         }
-
         .response-text h3 {
             font-size: 1.2rem;
             margin: 1rem 0 0.5rem;
             border-left: 3px solid var(--primary);
             padding-left: 0.75rem;
         }
-
         .response-text p {
             margin-bottom: 0.75rem;
         }
-
         .response-text ul, .response-text ol {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
         }
-
         .response-text li {
             margin-bottom: 0.4rem;
         }
@@ -467,6 +446,26 @@
             font-size: 0.9rem;
             line-height: 1.4;
             white-space: pre;
+            color: #ffffff !important;
+        }
+
+        .response-text pre code * {
+            color: #ffffff !important;
+        }
+
+        .hljs-comment,
+        .hljs-comment * {
+            color: #ffffff !important;
+            font-weight: bold !important;
+        }
+
+        .hljs-keyword,
+        .hljs-built_in,
+        .hljs-literal,
+        .hljs-string,
+        .hljs-number,
+        .hljs-function .hljs-title {
+            color: #ffffff !important;
         }
 
         .output-block {
@@ -482,23 +481,9 @@
             border-left: 4px solid var(--success);
         }
 
-        /* highlight.js overrides */
-        .hljs-keyword, .hljs-built_in, .hljs-literal {
-            color: #ffffff !important;
-            font-weight: bold !important;
-        }
-        .hljs-comment, .hljs-comment .hljs-keyword {
-            color: #ffffff !important;
-            font-weight: bold !important;
-        }
-        .hljs-string { color: #f1fa8c !important; }
-        .hljs-number { color: #bd93f9 !important; }
-        .hljs-function .hljs-title { color: #50fa7b !important; }
-
         .status-message {
             margin-top: 1.5rem;
         }
-
         .success-message, .error-message, .processing-message {
             padding: 1rem;
             border-radius: 4px;
@@ -516,7 +501,6 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
-
         .tech-stack {
             display: flex;
             justify-content: center;
@@ -538,10 +522,7 @@
     <div class="app-container">
         <header class="app-header">
             <div class="theme-switch-wrapper" id="themeToggleWrapper">
-                <div class="theme-icons">
-                    <i class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i>
-                </div>
+                <i class="fas fa-sun theme-icon"></i>
                 <label class="switch">
                     <input type="checkbox" id="themeCheckbox">
                     <span class="slider"></span>
@@ -621,7 +602,7 @@
         </main>
 
         <footer class="app-footer">
-            <p>Powered by OpenAI & Qdrant Vector Search</p>
+            <p>Powered by Hugging Face AI & Qdrant Vector Search</p>
             <div class="tech-stack">
                 <i class="fab fa-python"></i>
                 <i class="fas fa-flask"></i>
@@ -632,16 +613,14 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
     <script>
-        // ======================= 1. STRIP HTML TAGS ONLY (keep **, no conversion) =======================
+        // ===== 1. REMOVE HTML TAGS =====
         function stripHtmlTags(html) {
             if (!html) return '';
-            // Simple regex to remove any HTML tags (including <strong> etc.)
             return html.replace(/<[^>]*>/g, '');
         }
 
-        // ======================= 2. THEME TOGGLE =======================
+        // ===== 2. THEME TOGGLE =====
         const themeCheckbox = document.getElementById('themeCheckbox');
         const body = document.body;
         function setTheme(theme) {
@@ -667,9 +646,17 @@
         }
         themeCheckbox.addEventListener('change', (e) => setTheme(e.target.checked ? 'dark' : 'light'));
 
-        // ======================= 3. CLEAR BUTTON =======================
+        // ===== 3. CLEAR BUTTON =====
         const clearBtn = document.getElementById('clearResponseBtn');
         const responseArea = document.getElementById('response-area');
+        function updateClearButtonVisibility() {
+            const hasResponse = responseArea.querySelector('.response-bubble') !== null;
+            if (hasResponse) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+        }
         clearBtn.addEventListener('click', () => {
             responseArea.innerHTML = `
                 <div class="placeholder-text">
@@ -677,9 +664,10 @@
                     <p>Upload a PDF and ask questions to get AI-powered insights</p>
                 </div>
             `;
+            updateClearButtonVisibility();
         });
 
-        // ======================= 4. UPLOAD PDF =======================
+        // ===== 4. UPLOAD PDF =====
         async function uploadPDF() {
             const fileInput = document.getElementById('pdf-upload');
             const statusElement = document.getElementById('upload-status');
@@ -705,7 +693,7 @@
             }
         }
 
-        // ======================= 5. SUBMIT QUERY (strip HTML tags, keep **) =======================
+        // ===== 5. SUBMIT QUERY =====
         async function submitQuery() {
             const pdfSelector = document.getElementById('pdf-selector');
             const queryInput = document.getElementById('query-input');
@@ -729,11 +717,8 @@
                 const result = await response.json();
                 aiIndicator.style.display = 'none';
 
-                // Strip HTML tags only – do NOT convert ** to <strong>
                 let cleanedResponse = result.response || '';
                 cleanedResponse = stripHtmlTags(cleanedResponse);
-                // No further conversion of ** is performed
-
                 const formattedHtml = formatResponseText(cleanedResponse);
                 responseDiv.innerHTML = `
                     <div class="response-bubble animate-popin">
@@ -747,13 +732,14 @@
                 document.querySelectorAll('.response-text pre code').forEach(block => {
                     hljs.highlightElement(block);
                 });
+                updateClearButtonVisibility();
             } catch (error) {
                 aiIndicator.style.display = 'none';
                 responseDiv.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
             }
         }
 
-        // ======================= 6. RESPONSE TEXT FORMATTER (headings, lists, code, output) =======================
+        // ===== 6. RESPONSE FORMATTER =====
         function formatResponseText(text) {
             if (!text) return '<p>No response content.</p>';
             let escaped = escapeHtml(text);
@@ -809,7 +795,6 @@
                     listItems.push(`<li>${bulletMatch[1]}</li>`);
                 } else {
                     if (inList) flushList();
-                    // Do NOT convert ** to <strong> – leave as plain text
                     let para = line.replace(/__(.+?)__/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>');
                     htmlLines.push(`<p>${para}</p>`);
                 }
@@ -829,7 +814,7 @@
             return textarea.value;
         }
 
-        // ======================= 7. DRAG & DROP + BROWSE FILENAME =======================
+        // ===== 7. DRAG & DROP + BROWSE FILENAME =====
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('pdf-upload');
