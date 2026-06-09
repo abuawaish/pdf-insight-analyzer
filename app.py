@@ -58,4 +58,4 @@ def handle_query():
 if __name__ == '__main__':
     from utils import db_utils
     db_utils.initialize_collection()
-    app.run(host='0.0.0.0',port=5002, debug=True)
+    app.run(host='0.0.0.0',port=5002)
